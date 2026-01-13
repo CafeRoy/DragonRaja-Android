@@ -1,0 +1,226 @@
+{
+  "buildFiles": [
+    "C:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+    "C:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+      "NDK_PROJECT_PATH\u003dnull",
+      "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+      "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+      "APP_ABI\u003darm64-v8a",
+      "NDK_ALL_ABIS\u003darm64-v8a",
+      "NDK_DEBUG\u003d1",
+      "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+      "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+      "APP_PLATFORM\u003dandroid-21",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+    "NDK_PROJECT_PATH\u003dnull",
+    "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+    "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+    "APP_ABI\u003darm64-v8a",
+    "NDK_ALL_ABIS\u003darm64-v8a",
+    "NDK_DEBUG\u003d1",
+    "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+    "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+    "APP_PLATFORM\u003dandroid-21",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "main-debug-arm64-v8a": {
+      "artifactName": "main",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libmain.so"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libmain.so",
+      "runtimeFiles": []
+    },
+    "SDL2_mixer-debug-arm64-v8a": {
+      "artifactName": "SDL2_mixer",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libSDL2_mixer.so"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libSDL2_mixer.so",
+      "runtimeFiles": []
+    },
+    "SDL2_ttf-debug-arm64-v8a": {
+      "artifactName": "SDL2_ttf",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libSDL2_ttf.so"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libSDL2_ttf.so",
+      "runtimeFiles": []
+    },
+    "freetype-debug-arm64-v8a": {
+      "artifactName": "freetype",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libfreetype.a"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libfreetype.a",
+      "runtimeFiles": []
+    },
+    "SDL2-debug-arm64-v8a": {
+      "artifactName": "SDL2",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libSDL2.so"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libSDL2.so",
+      "runtimeFiles": []
+    },
+    "SDL2_image-debug-arm64-v8a": {
+      "artifactName": "SDL2_image",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libSDL2_image.so"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libSDL2_image.so",
+      "runtimeFiles": []
+    },
+    "png-debug-arm64-v8a": {
+      "artifactName": "png",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libpng.a"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libpng.a",
+      "runtimeFiles": []
+    },
+    "harfbuzz-debug-arm64-v8a": {
+      "artifactName": "harfbuzz",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libharfbuzz.a"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libharfbuzz.a",
+      "runtimeFiles": []
+    },
+    "SDL2_net-debug-arm64-v8a": {
+      "artifactName": "SDL2_net",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libSDL2_net.so"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libSDL2_net.so",
+      "runtimeFiles": []
+    },
+    "jpeg-debug-arm64-v8a": {
+      "artifactName": "jpeg",
+      "buildCommandComponents": [
+        "C:\\Users\\lamyu\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\ndk-build.cmd",
+        "NDK_PROJECT_PATH\u003dnull",
+        "APP_BUILD_SCRIPT\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Android.mk",
+        "NDK_APPLICATION_MK\u003dC:\\MyAndroidGame\\android-project\\app\\src\\main\\jni\\Application.mk",
+        "APP_ABI\u003darm64-v8a",
+        "NDK_ALL_ABIS\u003darm64-v8a",
+        "NDK_DEBUG\u003d1",
+        "NDK_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj",
+        "NDK_LIBS_OUT\u003dC:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/lib",
+        "APP_PLATFORM\u003dandroid-21",
+        "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j/obj/local/arm64-v8a/libjpeg.a"
+      ],
+      "abi": "arm64-v8a",
+      "output": "C:\\MyAndroidGame\\android-project\\app\\build\\intermediates\\cxx\\Debug\\37d1eq3j\\obj\\local\\arm64-v8a\\libjpeg.a",
+      "runtimeFiles": []
+    }
+  }
+}

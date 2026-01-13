@@ -1,0 +1,28 @@
+{
+    "logs": [
+        {
+            "outputFile": "org.libsdl.app-mergeDebugResources-2:/values-v28/values-v28.xml",
+            "map": [
+                {
+                    "source": "C:\\MyAndroidGame\\android-project\\app\\src\\main\\res\\values-v28\\styles.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "59",
+                        "endLines": "13",
+                        "endColumns": "12",
+                        "endOffsets": "514"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "12",
+                        "endColumns": "12",
+                        "endOffsets": "500"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,127 @@
+{
+    "logs": [
+        {
+            "outputFile": "org.libsdl.app-debug-4:/values-v28_values-v28.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\MyAndroidGame\\android-project\\app\\src\\main\\res\\values-v28\\styles.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "59",
+                        "endLines": "13",
+                        "endColumns": "12",
+                        "endOffsets": "514"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "12",
+                        "endColumns": "12",
+                        "endOffsets": "500"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "org.libsdl.app-debug-4:/values-v27_values-v27.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\MyAndroidGame\\android-project\\app\\src\\main\\res\\values-v27\\styles.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "59",
+                        "endLines": "13",
+                        "endColumns": "12",
+                        "endOffsets": "490"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "12",
+                        "endColumns": "12",
+                        "endOffsets": "476"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "org.libsdl.app-debug-4:/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\MyAndroidGame\\android-project\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "56",
+                        "endLines": "13",
+                        "endColumns": "12",
+                        "endOffsets": "501"
+                    },
+                    "to": {
+                        "startLines": "7",
+                        "startColumns": "4",
+                        "startOffsets": "303",
+                        "endLines": "17",
+                        "endColumns": "12",
+                        "endOffsets": "748"
+                    }
+                },
+                {
+                    "source": "C:\\MyAndroidGame\\android-project\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "4,2,3",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "153,55,102",
+                        "endColumns": "45,46,50",
+                        "endOffsets": "194,97,148"
+                    },
+                    "to": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,101,148",
+                        "endColumns": "45,46,50",
+                        "endOffsets": "96,143,194"
+                    }
+                },
+                {
+                    "source": "C:\\MyAndroidGame\\android-project\\app\\src\\main\\res\\values\\ic_launcher_background.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endColumns": "56",
+                        "endOffsets": "109"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "199",
+                        "endColumns": "56",
+                        "endOffsets": "251"
+                    }
+                },
+                {
+                    "source": "C:\\MyAndroidGame\\android-project\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "46",
+                        "endOffsets": "58"
+                    },
+                    "to": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "256",
+                        "endColumns": "46",
+                        "endOffsets": "298"
+                    }
+                }
+            ]
+        }
+    ]
+}

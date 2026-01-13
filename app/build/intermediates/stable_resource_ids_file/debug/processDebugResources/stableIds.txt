@@ -1,0 +1,9 @@
+com.DragonRefactor.dragonraja:style/SDLTheme = 0x7f040000
+com.DragonRefactor.dragonraja:string/app_name = 0x7f030000
+com.DragonRefactor.dragonraja:mipmap/ic_launcher_round = 0x7f020002
+com.DragonRefactor.dragonraja:mipmap/ic_launcher_foreground = 0x7f020001
+com.DragonRefactor.dragonraja:color/ic_launcher_background = 0x7f010003
+com.DragonRefactor.dragonraja:mipmap/ic_launcher = 0x7f020000
+com.DragonRefactor.dragonraja:color/colorPrimaryDark = 0x7f010002
+com.DragonRefactor.dragonraja:color/colorPrimary = 0x7f010001
+com.DragonRefactor.dragonraja:color/colorAccent = 0x7f010000
