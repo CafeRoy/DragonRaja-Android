@@ -3,6 +3,4 @@ make: Nothing to be done for 'SDL2_image'.
 make: Nothing to be done for 'SDL2_mixer'.
 make: Nothing to be done for 'SDL2_net'.
 make: Nothing to be done for 'SDL2_ttf'.
-[arm64-v8a] Compile++      : main <= Menu.cpp
-[arm64-v8a] Compile++      : main <= MobileBridge.cpp
-[arm64-v8a] SharedLibrary  : libmain.so
+make: Nothing to be done for 'main'.

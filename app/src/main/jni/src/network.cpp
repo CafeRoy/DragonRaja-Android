@@ -398,7 +398,7 @@ class CMyCodeString {
 
 int SetMyCode(short int& mycode, char* mystring) {
   CMyCodeString MY_STRING;
-  g_GameInfo.g_MyCode = mycode = 3177;
+  g_GameInfo.g_MyCode = mycode = 3178;
   // 使用固定迴圈，不再依賴 strlen()
   for (int i = 0; i < MAX_MY_STRING; i++) {
     mystring[i] = MY_STRING.GetChar(i);
@@ -426,9 +426,9 @@ int ConnectLogin(t_connection* c, std::string ID, std::string PW, int LineNum)
 	memcpy(packet.u.ClientAccessLogin.id, ID.data(), ID.length());
 	memcpy(packet.u.ClientAccessLogin.pw, PW.data(), PW.length());
 
-    /*std::string hwid = HWIDManager::GetHWID();
-    strncpy(packet.u.ClientAccessLogin.szHWID, hwid.c_str(), 19);
-    packet.u.ClientAccessLogin.szHWID[19]= '\0';*/
+    std::string hwid = HWIDManager::GetHWID();
+    strncpy(packet.u.ClientAccessLogin.szHWID, hwid.c_str(), HWID_LENGTH-1);
+    packet.u.ClientAccessLogin.szHWID[HWID_LENGTH-1]= '\0';
 
 #ifdef _DEBUG
 	packet.u.ClientAccessLogin.version = GM_TOOL_VERSION;
@@ -437,7 +437,7 @@ int ConnectLogin(t_connection* c, std::string ID, std::string PW, int LineNum)
 #endif
 
 	::SetMyCode(packet.u.ClientAccessLogin.mycode, packet.u.ClientAccessLogin.mystring);
-    packet.u.ClientAccessLogin.Foo = sizeof(packet.u.ClientAccessLogin);
+    packet.u.ClientAccessLogin.Foo = sizeof(CLIENTACCESSLOGIN);
 	::memset(packet.u.ClientAccessLogin.User_ID, 0, sizeof(packet.u.ClientAccessLogin.User_ID));
 	::memset(packet.u.ClientAccessLogin.GateWayIP, 0, sizeof(packet.u.ClientAccessLogin.GateWayIP));
 
@@ -506,6 +506,7 @@ void SendAllReady(void)
 
 	packet.u.all_ready.x = Hero->x;
 	packet.u.all_ready.y = Hero->y;
+    packet.u.all_ready.version = 1;//0:WINDOWS 1:ANDROID 2:IOS
 #ifdef _DEBUG // finito 060507
 	if (GetSysInfo(SI_GAME_MAKE_MODE))
 		if (SysInfo.notconectserver == 0 && SysInfo.entergameserver)

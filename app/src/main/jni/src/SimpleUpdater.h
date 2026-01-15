@@ -14,7 +14,7 @@ public:
 
     std::string baseUrl = "https://www.drefactor.com/packages/";
     //APK 當前版本號
-    const std::string CURRENT_APP_VERSION = "1.0";
+    const std::string CURRENT_APP_VERSION = "1.1";
     // ★★★ 新增：APK 下載頁面 (當需要更新時，會打開這個網頁) ★★★
     const std::string APP_DOWNLOAD_URL = "https://www.drefactor.com/Home/Download";
     // 核心入口：呼叫這個函式，它會卡住主程式，直到更新跑完

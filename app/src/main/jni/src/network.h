@@ -147,7 +147,7 @@ typedef struct server_accept_join
 typedef struct all_ready
 {
 	short int x,y;
-
+    short int version;
 }t_all_ready;
 
 
@@ -820,14 +820,14 @@ typedef struct CLIENTACCESSLOGIN
 	short int		version;
 	char			ip[IP_LENGTH];		//Added by zoung
 	WORD			wPort;		// Added by chan78 at 2000/12/17
-	BYTE			Foo;
+	int 			Foo;
 	short int		Corp_Code;	//¾÷Ã¼ ÄÚµå
 	char			mystring[MAX_MY_STRING];
 	char			User_ID[ID_LENGTH];	//Á¾·®Á¦ ¾÷Ã¼¿ë ID
 	char			GateWayIP[IP_LENGTH];
 	short int		mycode;	
 	int				GateWayPORT;
-    char			szHWID[20];
+    char			szHWID[HWID_LENGTH];
 }t_ClientAccessLogin, *LPCLIENTACCESSLOGIN;
 
 
