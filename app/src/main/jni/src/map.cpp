@@ -1631,7 +1631,36 @@ BOOL IsScreenAreaView(int x, int y)		//������Ʈ�� ���� �
 	return 0;
 }
 
+void SetView(LPCHARACTER ch, int range)
+{
+    if (!ch) return;
+    ch->sight = range;
 
+    int rangex = range;
+    int rangey = range - 2;
+
+    // 【關鍵修改】：使用 visual_x / visual_y (平滑座標) 來計算中心
+    // 原本是用 ch->x / ch->y (這是導致邊緣抖動的元兇)
+    int center_x = (int)(ch->visual_x / 32.0f);
+    int center_y = (int)(ch->visual_y / 32.0f);
+
+    int mx = center_x - (GAME_SCREEN_XSIZE / 32 / 2) - 1;
+    // 如果覺得畫面沒置中，可以把上面的 -1 去掉試試
+    int my = center_y - (GAME_SCREEN_YSIZE / 32 / 2) - 1;
+
+    // 計算捲動邊界常量 (保持原本邏輯)
+    LimitMapSx = mx - rangex - 3;	if (LimitMapSx < 0) LimitMapSx = 0;
+    LimitMapSy = my - rangey + 5;	if (LimitMapSy < 0) LimitMapSy = 0;
+
+    LimitMapEx = mx + rangex + 3;
+    if (LimitMapEx > g_Map.file.wWidth - (GAME_SCREEN_XSIZE / 32))
+        LimitMapEx = g_Map.file.wWidth - (GAME_SCREEN_XSIZE / 32);
+
+    LimitMapEy = my + rangey - 5;
+    if (LimitMapEy > g_Map.file.wHeight - (GAME_SCREEN_YSIZE / 32) - 1)
+        LimitMapEy = g_Map.file.wHeight - (GAME_SCREEN_YSIZE / 32) - 1;
+}
+/*
 ///////////////////////// 0625 lkh ���� /////////////////////////////
 void SetView(LPCHARACTER ch, int range)
 {
@@ -1659,7 +1688,7 @@ void SetView(LPCHARACTER ch, int range)
 
     // 注意：這裡【刪除】原本的 g_Map.x++ 邏輯，因為它太慢了 (17 UPS)
 }
-
+*/
 
 
 // 依據開啟的選單類型，調整英雄角色的螢幕位置。

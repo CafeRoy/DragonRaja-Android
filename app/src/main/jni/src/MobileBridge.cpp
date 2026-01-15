@@ -318,27 +318,84 @@ void Mobile_DoLeftButton() {
 void Mobile_DoRightButton(int skillSlot) {
     if (!Hero) return;
 
+    if(skillSlot == 1){//對自己施放
+
+        g_nRButtonState = STATE_BUTTON_PRESSED;	 RButtonDownIng = 1;
+        LPCHARACTER  old_target = g_GameInfo.lpcharacter;
+        int OldMouseMenu = g_MouseInMenu;
+        int SelectedType = g_GameInfo.nSelectedSpriteType;
+        g_MouseInMenu = 0;
+        g_GameInfo.lpcharacter = Hero;g_GameInfo.nSelectedSpriteType = SPRITETYPE_CHARACTER;
+        DoRButtonDown();
+        g_GameInfo.lpcharacter = old_target;g_GameInfo.nSelectedSpriteType = SelectedType;
+        g_MouseInMenu = OldMouseMenu;
+        g_nRButtonState = STATE_BUTTON_RELEASED; RButtonDownIng = 0;
+        return;
+    }
+
+
     bool find_npc = true;
     LPCHARACTER target = FindCharacterNearby(find_npc);
     //if(!target) return;
 
     int magic_no = Hero->excute_MagicNum.GetDecrypted();
 
-    if(target /*Hero->ready_Magic == 2*/ && magic_no < 200){
-        if(IsHarmfulMagic(magic_no)){
-            g_GameInfo.lpcharacter = target;
+    if (target && Hero->ready_Magic == 2 && magic_no < 200) {
+        if (IsHarmfulMagic(magic_no)) {
+
+            // 1. 先取得座標並計算距離
+            float heroX = (float)Hero->x;
+            float heroY = (float)Hero->y;
+            float targetX = (float)target->x;
+            float targetY = (float)target->y;
+
+            float dx = targetX - heroX;
+            float dy = targetY - heroY;
+            float dist = sqrt(dx * dx + dy * dy); // 算出真實距離
+
+            // 2. ★★★ 這裡是你要求的新邏輯 ★★★
+            // 如果距離小於等於 150，鎖定目標；否則設為 nullptr (只朝方向施法但不鎖定)
+            if (dist <= 150.0f) {
+                g_GameInfo.nSelectedSpriteType = SPRITETYPE_MONSTER;
+                g_GameInfo.lpcharacter = target;
+            } else {
+                g_GameInfo.nSelectedSpriteType = SPRITETYPE_NONE;
+                g_GameInfo.lpcharacter = nullptr;
+            }
+
+            // 3. 設定滑鼠座標 (向量歸一化邏輯)
+            // 這裡我們設定滑鼠永遠點在距離自己 150 的方向上 (不管是否鎖定目標)
+            float castDistance = 150.0f;
+
+            if (dist > 0.001f) {
+                // 算出從自己往怪物的方向，延伸 castDistance 的位置
+                float offsetX = (dx / dist) * castDistance;
+                float offsetY = (dy / dist) * castDistance;
+
+                // Hero 在螢幕上的位置
+                float heroScreenX = heroX - Mapx;
+                float heroScreenY = heroY - Mapy;
+
+                // 設定滑鼠
+                g_pointMouseX = (int)(heroScreenX + offsetX);
+                g_pointMouseY = (int)(heroScreenY + offsetY);
+            } else {
+                // 重疊時的備案
+                g_pointMouseX = (int)(heroX - Mapx + 50);
+                g_pointMouseY = (int)(heroY - Mapy+20);
+            }
+
+            // 4. 更新全域變數
+            // Mox/Moy 通常是紀錄點擊的"世界座標"，還是設為目標位置比較保險，或者設為計算出的虛擬點也可以
+            // 這裡維持設為目標原始位置，比較符合直覺
+            Mox = g_pointMouseX + Mapx;
+            Moy = g_pointMouseY + Mapy;
+            g_pointMouse.x = g_pointMouseX;
+            g_pointMouse.y = g_pointMouseY;
         }
     }
-    /*int targetX = target->x;
-    int targetY = target->y;
-    Mox = targetX;
-    Moy = targetY;
-    g_pointMouseX = targetX - Mapx;
-    g_pointMouseY = targetY - Mapy-10;
-    // 3. 更新其他依賴邏輯座標的變數
-    g_pointMouse.x = g_pointMouseX;
-    g_pointMouse.y = g_pointMouseY;*/
 
+    //這是其他邏輯
     if(g_MouseInMenuThisFrame){
         switch (g_MouseInMenuThisFrame)
         {
@@ -354,16 +411,10 @@ void Mobile_DoRightButton(int skillSlot) {
         return;
     }
 
+    //執行右鍵
     g_nRButtonState = STATE_BUTTON_PRESSED;	 RButtonDownIng = 1;
-    // 假設 skillSlot = 1 代表 F1
-    // 你可以去查原本遊戲按下 F1 時呼叫了什麼
-    // 通常是 SelectSkill 或者是 CastSkill
     DoRButtonDown();
-
     g_nRButtonState = STATE_BUTTON_RELEASED; RButtonDownIng = 0;
-    // Hero->UseSkill(skillSlot); 
-    // 或者
-    // Network::SendSkillPacket(skillSlot);
 }
 
 void Mobile_UsePotion(int quickSlot) {

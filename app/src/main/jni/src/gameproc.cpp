@@ -608,29 +608,60 @@ void ReputMagicEffect() {
         std::sort(neworder, neworder + NewOrderC, CompareOrderItems_Safe);
     }
 }
+void UpdateCharacterVisual_xy() {
+    // 4. 視覺更新
+    LPCHARACTER ch_iterator = Hero;
+    while (ch_iterator != NULL) {
+        UpdateCharacterVisuals(ch_iterator);
+        ch_iterator->hat_is_hidden = false;
+
+        if (MapNumber == 81) {//GM_EVENT MAP
+            ch_iterator->namedisplaycount = 0;
+            ch_iterator->smiledelay = 0;
+            ch_iterator->ChatDelay = 0;
+        }
+
+        ch_iterator = ch_iterator->lpNext;
+    }
+}
+void UpdateMagicVisuals_144Hz()
+{
+    MAGICLIST* pML = g_lpML;
+    while (pML != NULL)
+    {
+        if (!pML->bInitVisual) {
+            pML->fVisualX = (float)pML->x;
+            pML->fVisualY = (float)pML->y;
+            pML->bInitVisual = true;
+        }
+
+        LPCHARACTER lpChar = NULL;
+        // 跟隨判定
+        if (pML->fallow == 1) lpChar = pML->lpChar_Target ? pML->lpChar_Target : pML->lpChar_Own;
+        else if (g_lpET[pML->magicNum].pattern_Num == FIX_EFFECT) lpChar = pML->lpChar_Own;
+
+        if (lpChar) {
+            pML->fVisualX = lpChar->visual_x;
+            pML->fVisualY = lpChar->visual_y;
+        }
+        else {
+            // 平滑追蹤邏輯座標 (解決火球瞬移問題)
+            // 如果差距太大(代表瞬移)，直接賦值，否則平滑移動
+            if (fabs((float)pML->x - pML->fVisualX) > 100.0f) {
+                pML->fVisualX = (float)pML->x; pML->fVisualY = (float)pML->y;
+            }
+            else {
+                pML->fVisualX += ((float)pML->x - pML->fVisualX) * 0.9f;
+                pML->fVisualY += ((float)pML->y - pML->fVisualY) * 0.9f;
+            }
+        }
+        pML = pML->Next;
+    }
+}
 void HandleCameraScrollingPerFrame()
 {
     if (Hero == NULL) return;
-    if (g_IsJoystickMoving)
-    {
-        // 取得螢幕能夠顯示多少格 Tile (例如 800px / 32 = 25格)
-        // 注意：這裡假設 GAME_SCREEN_XSIZE 是您的解析度寬度常數
-        int screenTileW = GAME_SCREEN_XSIZE / 32;
-        int screenTileH = GAME_SCREEN_YSIZE / 32;
 
-        // 計算主角所在的 Tile 座標
-        int heroTileX = Hero->visual_x / 32;
-        int heroTileY = Hero->visual_y / 32;
-
-        // ★ 核心修正：主角座標 - 半個螢幕寬度 = 鏡頭左上角座標 ★
-        g_Map.tox = heroTileX - (screenTileW / 2);
-        g_Map.toy = heroTileY - (screenTileH / 2);
-
-        // 防止鏡頭跑出地圖邊界 (Clamp)
-        // 這是為了避免主角在邊緣時，鏡頭看到地圖外面的黑邊
-        if (g_Map.tox < 0) g_Map.tox = 0;
-        if (g_Map.toy < 0) g_Map.toy = 0;
-    }
     // 1. 選單判斷
     bool bMovingMenu = (!IsChatBoxLock() && g_MouseInMenu && TileMap[Hero->x >> 5][Hero->y >> 5].attr_no_battle);
     if (bMovingMenu) return;
@@ -660,12 +691,12 @@ void HandleCameraScrollingPerFrame()
     bool isInputActive = false;
 
     // --- 輸入處理 ---
-    if (!IsChatBoxActive() && !g_IsJoystickMoving)
+    //if (!IsChatBoxActive() || GmGui.GetKey(GKEY_LEFT) == SDL_SCANCODE_LEFT)
     {
-        if (isKeyPressed(SDL_SCANCODE_LEFT)) { fAccumTox -= step; isInputActive = true; }
-        if (isKeyPressed(SDL_SCANCODE_RIGHT)) { fAccumTox += step; isInputActive = true; }
-        if (isKeyPressed(SDL_SCANCODE_UP)) { fAccumToy -= step; isInputActive = true; }
-        if (isKeyPressed(SDL_SCANCODE_DOWN)) { fAccumToy += step; isInputActive = true; }
+        /*if (isKeyPressed(GmGui.GetKey(GKEY_LEFT))) { fAccumTox -= step; isInputActive = true; }
+        if (isKeyPressed(GmGui.GetKey(GKEY_RIGHT))) { fAccumTox += step; isInputActive = true; }
+        if (isKeyPressed(GmGui.GetKey(GKEY_UP))) { fAccumToy -= step; isInputActive = true; }
+        if (isKeyPressed(GmGui.GetKey(GKEY_DOWN))) { fAccumToy += step; isInputActive = true; }*/
     }
 
     if (!isInputActive && g_StartMenuOn == false)
@@ -680,12 +711,6 @@ void HandleCameraScrollingPerFrame()
     // 更新全域狀態
     g_GameInfo.g_bIsManualScrolling = isInputActive;
 
-    // 如果發現滑鼠/搖桿沒有在邊緣推圖，就自動同步 static 變數
-    if (!isInputActive) {
-        // 讓 static 累加器同步當前地圖位置，防止彈跳
-        fAccumTox = (float)g_Map.tox;
-        fAccumToy = (float)g_Map.toy;
-    }
     // 【關鍵重點：硬邊界】
     // 這裡用 Clamp 確保數值絕對不超標，這樣就不會有「超出去又拉回來」的抖動
     if (isInputActive)
@@ -768,23 +793,6 @@ void UpdateCameraSmoothly() {
     g_Map.oY = -(Mapy % TILE_SIZE);
     Mox = Mapx + g_pointMouseX;
     Moy = Mapy + g_pointMouseY;
-}
-
-void UpdateCharacterVisual_xy() {
-    // 4. 視覺更新
-    LPCHARACTER ch_iterator = Hero;
-    while (ch_iterator != NULL) {
-        UpdateCharacterVisuals(ch_iterator);
-        ch_iterator->hat_is_hidden = false;
-
-        if (MapNumber == 81) {//GM_EVENT MAP
-            ch_iterator->namedisplaycount = 0;
-            ch_iterator->smiledelay = 0;
-            ch_iterator->ChatDelay = 0;
-        }
-
-        ch_iterator = ch_iterator->lpNext;
-    }
 }
 void RenderGame() {
 
@@ -1021,6 +1029,7 @@ BOOL GameProc() {
     UpdateRainSmoothly(dt);
     // 3. 視覺與攝像機更新 (每幀執行 - 144 FPS)
     UpdateCharacterVisual_xy(); // 先更新人物視覺位置
+    UpdateMagicVisuals_144Hz();
     UpdateCameraSmoothly();     // 【關鍵】更新攝像機平滑位置
     ReputMagicEffect();
     // 4. 渲染
@@ -1217,6 +1226,92 @@ void UpdateCursorIcons(int margin) {
 }
 
 void MouseProc(void) {
+
+    if (Hero) SetView(Hero, Hero->sight);
+
+    if (g_StartMenuOn == false)  // fullscreen mode and not in the login menu
+    {
+        int mousechange = 0;
+        const int margin = 3;
+        if (g_pointMouseX < margin)
+            if (MoveScreen(DIRECTION_LEFT)) mousechange = 1;  // ����..
+        if (g_pointMouseX > SCREEN_WIDTH - margin)
+            if (MoveScreen(DIRECTION_RIGHT)) mousechange = 1;  // ������..
+        if (g_pointMouseY < margin)
+            if (MoveScreen(DIRECTION_UP)) mousechange = 1;  // ��..
+        if (g_pointMouseY > SCREEN_HEIGHT - margin)
+            if (MoveScreen(DIRECTION_DOWN)) mousechange = 1;  // �Ʒ�..
+
+        if (g_pointMouseX < margin) {
+            if (g_pointMouseY < margin) {
+                PushMouseCursor();
+                CursorNo(11);
+            }
+            else if (g_pointMouseY > SCREEN_HEIGHT - margin) {
+                PushMouseCursor();
+                CursorNo(9);
+            }
+            else {
+                PushMouseCursor();
+                CursorNo(10);
+            }
+        }
+        else if (g_pointMouseX > SCREEN_WIDTH - margin) {
+            if (g_pointMouseY < margin) {
+                PushMouseCursor();
+                CursorNo(13);
+            }
+            else if (g_pointMouseY > SCREEN_HEIGHT - margin) {
+                PushMouseCursor();
+                CursorNo(15);
+            }
+            else {
+                PushMouseCursor();
+                CursorNo(14);
+            }
+        }
+        else {
+            if (g_pointMouseY < margin) {
+                PushMouseCursor();
+                CursorNo(12);
+            }
+            else if (g_pointMouseY > SCREEN_HEIGHT - margin) {
+                PushMouseCursor();
+                CursorNo(8);
+            }
+            else
+                PopMouseCursor();
+        }
+    }
+
+    //----------------------
+
+    Mapx = g_Map.x * TILE_SIZE - g_Map.oX;
+    Mapy = g_Map.y * TILE_SIZE - g_Map.oY;
+
+    Mox = Mapx + g_pointMouseX;
+    Moy = Mapy + g_pointMouseY;
+
+    if ((g_GameInfo.checkcount >= 16 /*&& g_MouseInMenu == 0*/) || g_GameInfo.mouseClick)
+        DoLbuttonStill();
+
+    switch (g_nLButtonState)
+    {
+        case	STATE_BUTTON_PRESSED:	DoLButtonDown();		break;
+        case	STATE_BUTTON_RELEASED:	DoLButtonUp();			break;
+    }
+
+    switch (g_nRButtonState)
+    {
+        case	STATE_BUTTON_PRESSED:		DoRButtonDown();		break;
+        case	STATE_BUTTON_RELEASED:		DoRButtonUp();			break;
+    }
+    if (g_nLDButtonState == STATE_BUTTON_DOUBLECLICK)	DoLDButtonDown();
+    if (g_nRDButtonState == STATE_BUTTON_DOUBLECLICK)	DoRDButtonDown();
+}
+
+/*
+void MouseProc(void) {
     if (!Hero) return;
 
     // 1. 只更新視野常量
@@ -1246,7 +1341,7 @@ void MouseProc(void) {
     if (g_nLDButtonState == STATE_BUTTON_DOUBLECLICK) DoLDButtonDown();
     if (g_nRDButtonState == STATE_BUTTON_DOUBLECLICK) DoRDButtonDown();
 }
-
+*/
 
 int ConnectProxyServer(t_connection* c)
 {
@@ -1692,6 +1787,7 @@ void DoHeroMove(int movetype, int x, int y)
 
 	if (DontMoveAttackFlag == TRUE || Hero->DontMoveAttackFlag)
 		return;
+
 	if (g_MouseInMenu) return;
 
 	if (Hero->nCurrentAction == 17)		// LTS 011214 LTS			// ���� ���¿��� ������ �ٲپ� �ش�.
@@ -2381,7 +2477,8 @@ void HeroActionProc(int mousebutton, int mx, int my)
 		{
 			Hero->nAttackedType = 0;
 			Hero->lpAttacked = NULL;
-			DoHeroMove(mousebutton, mx, my);
+            if(Hero->Mobile_RealMove)
+                DoHeroMove(mousebutton, mx, my);
 			break;
 		}
 		case SPRITETYPE_ON_THE_CEILING_CHAR:
@@ -2411,7 +2508,8 @@ void HeroActionProc(int mousebutton, int mx, int my)
 
 			Hero->nAttackedType = 0;
 			Hero->lpAttacked = NULL;
-			DoHeroMove(mousebutton, mx, my);
+            if(Hero->Mobile_RealMove)
+                DoHeroMove(mousebutton, mx, my);
 			break;
 		}
 		case SPRITETYPE_ON_THE_CEILING_CHAR:
@@ -2505,7 +2603,6 @@ void DoLButtonDown(void)	// LButton�� �ٿ�Ǹ� ����Ǿ� ��
 	if (NotNeededMouseLButtonClick()) return;
 	if (CounselerSelectChar()) return;
 	if (CheckSkill()) return;
-    if(g_MouseInMenuThisFrame) return;
 
 
 	if (tool_ID_INPUT_MYHOUSE)
@@ -2701,8 +2798,6 @@ void DoRButtonDown(void)
 	}
 
 }
-
-
 
 void DoRButtonUp(void)
 {

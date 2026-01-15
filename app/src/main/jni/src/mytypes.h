@@ -832,7 +832,8 @@ public:
 			m_lastExecutetime(0),
 			m_lastThrowtime(0),
 			m_ResultHit(0),
-			display_item(false)
+			display_item(false),
+            Mobile_RealMove(false)
 	{
 		memset(nCharacterData, 0, sizeof(nCharacterData));
 		memset(AnimationTable, 0, sizeof(AnimationTable));
@@ -898,7 +899,7 @@ public:
 	unsigned long m_lastUpdateTime;
 	int           m_ResultHit;
 	float m_fRemainX;
-
+    bool  Mobile_RealMove;
 	CCharRank name_status;
 	char type;
 	int id;
