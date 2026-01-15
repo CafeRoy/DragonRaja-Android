@@ -1,1 +1,0 @@
-C:\MyAndroidGame\android-project\app\build\intermediates\cxx\Debug\37d1eq3j\obj\local\x86_64

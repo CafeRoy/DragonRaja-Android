@@ -1,0 +1,21 @@
+# Gradle 緩存與配置
+.gradle/
+local.properties
+
+# Android 建置輸出目錄 (最重要！這會過濾掉 apk, .o, .so 等中間產物)
+build/
+app/build/
+.cxx/
+
+# IDE 設定檔 (不需要上傳)
+.idea/
+.vscode/
+*.iml
+*.DS_Store
+
+# 暫存檔與 Log
+*.log
+*.tmp
+
+# 如果你的 C++ 原始碼目錄中有編譯殘留的 .o 檔，也可以強制忽略
+# 但通常上面忽略 build/ 與 .cxx/ 就夠了

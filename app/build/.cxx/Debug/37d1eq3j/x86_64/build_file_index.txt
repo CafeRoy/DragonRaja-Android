@@ -1,2 +1,0 @@
-C:\MyAndroidGame\android-project\app\src\main\jni\Android.mk
-C:\MyAndroidGame\android-project\app\src\main\jni\Application.mk
