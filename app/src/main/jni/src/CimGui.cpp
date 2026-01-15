@@ -121,41 +121,6 @@ void CimGui::MyImGui_ImplSDLRenderer2_RenderDrawData(ImDrawData* draw_data, SDL_
     SDL_SetRenderDrawBlendMode(renderer, original_blend_mode);
 }
 
-// 判斷目前的滑鼠座標 (mouseX, mouseY) 是否落在虛擬搖桿或按鈕的範圍內
-bool IsInsideMobileUI(int mouseX, int mouseY)
-{
-    // 假設你的遊戲畫面邏輯大小是 1280x720
-    // ★注意：如果你的視窗實際大小不是 1280x720，這裡需要做座標轉換 (例如 mouseX / scaleX)
-    float logicW = 1280.0f;
-    float logicH = 720.0f;
-    float scale = 1.3f;
-
-    // --- 1. 左下角搖桿範圍計算 ---
-    float joySize = 220.0f * scale;
-    // 搖桿矩形: X=30, Y=底部-JoySize-20, W=JoySize, H=JoySize
-    float joyX = 30.0f;
-    float joyY = logicH - joySize - 20.0f;
-
-    if (mouseX >= joyX && mouseX <= (joyX + joySize) &&
-        mouseY >= joyY && mouseY <= (joyY + joySize)) {
-        return true; // 點在搖桿上
-    }
-
-    // --- 2. 右下角按鈕範圍計算 ---
-    float btnW = 320.0f * scale;
-    float btnH = 260.0f * scale;
-    // 按鈕矩形: X=右邊界-BtnW-20, Y=底部-BtnH-10
-    float btnX = logicW - btnW - 20.0f;
-    float btnY = logicH - btnH - 10.0f;
-
-    if (mouseX >= btnX && mouseX <= (btnX + btnW) &&
-        mouseY >= btnY && mouseY <= (btnY + btnH)) {
-        return true; // 點在按鈕區上
-    }
-
-    return false; // 點在空地上
-}
-
 // =================================================================================
 // 單例實作
 // =================================================================================
@@ -272,7 +237,7 @@ bool CimGui::ProcessEvent(SDL_Event* event)
     }
 
     // 3. 滑鼠輸入：手動物理判定
-    if (event->type == SDL_MOUSEBUTTONDOWN ||
+    if (event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEMOTION ||
         event->type == SDL_MOUSEBUTTONUP ||
         event->type == SDL_MOUSEWHEEL)
     {
@@ -353,7 +318,9 @@ void CimGui::SetInGame(bool state, LPCHARACTER heroPtr) {
 void CimGui::Draw() {
     // 只有當開關為 true 時才畫
     if (m_showGmPanel ) {
+#ifdef _DEBUG
         //DrawGmPanel();
+#endif
     }else if(m_showSettingsPanel){
         //DrawSettingsPanel();
     }
@@ -365,6 +332,7 @@ void CimGui::Draw() {
     }
 }
 
+#ifdef _DEBUG //GMPanel GMMenu
 void CimGui::DrawGmPanel() {
     if (!m_hero) return;
 
@@ -399,7 +367,6 @@ void CimGui::DrawGmPanel() {
 
     ImGui::End();
 }
-
 // ---------------------------------------------------------------------------------
 // GM 指令區塊細節
 // ---------------------------------------------------------------------------------
@@ -642,6 +609,7 @@ void CimGui::DrawCharacterManager() {
 // =================================================================================
 // 輔助與封包發送實作
 // =================================================================================
+#endif
 
 LPCHARACTER CimGui::FindCharacter(const std::string& name) {
     LPCHARACTER ch = m_hero;
@@ -791,56 +759,6 @@ void CimGui::SendPacket_BlockFunctions(int actionType) {
     }
 }
 
-void CimGui::SendKeyDown(int sdl_scancode) {
-    SDL_Event event;
-    memset(&event, 0, sizeof(event));
-
-    // 1. 基本設定
-    event.type = SDL_KEYDOWN;
-    event.key.state = SDL_PRESSED;
-    event.key.repeat = 0;
-
-    // 2. ★★★ 關鍵修正：必須填寫 Window ID ★★★
-    // 如果沒有填寫這個，SDL_PollEvent 拿出來後，可能因為找不到對應視窗而被丟棄
-    if (m_window) {
-        event.key.windowID = SDL_GetWindowID(m_window);
-    }
-
-    // 3. 補全時間戳記 (有些遊戲邏輯會檢查間隔)
-    event.key.timestamp = SDL_GetTicks();
-
-    // 4. 設定 Scancode
-    event.key.keysym.scancode = (SDL_Scancode)sdl_scancode;
-
-    // 5. ★ 建議補全 Keycode (sym) ★
-    // 雖然您說遊戲只看 scancode，但 SDL 內部轉換有時依賴 sym
-    event.key.keysym.sym = SDL_GetKeyFromScancode((SDL_Scancode)sdl_scancode);
-
-    // 6. 推入並檢查結果
-    if (SDL_PushEvent(&event) != 1) {
-        SDL_Log("Failed to push KeyDown event! Error: %s", SDL_GetError());
-    }
-}
-
-void CimGui::SendKeyUp(int sdl_scancode) {
-    SDL_Event event;
-    memset(&event, 0, sizeof(event));
-
-    event.type = SDL_KEYUP;
-    event.key.state = SDL_RELEASED;
-    event.key.repeat = 0;
-
-    if (m_window) {
-        event.key.windowID = SDL_GetWindowID(m_window);
-    }
-    event.key.timestamp = SDL_GetTicks();
-    event.key.keysym.scancode = (SDL_Scancode)sdl_scancode;
-    event.key.keysym.sym = SDL_GetKeyFromScancode((SDL_Scancode)sdl_scancode);
-
-    if (SDL_PushEvent(&event) != 1) {
-        SDL_Log("Failed to push KeyUp event!");
-    }
-}
 // -----------------------------------------------------------------------------
 // [核心函式] 繪製虛擬搖桿
 // -----------------------------------------------------------------------------
@@ -915,30 +833,6 @@ void CimGui::DrawJoystick(float scale) {
         }
     }
 }
-// 輔助函式：畫圓形按鈕並回傳是否點擊
-bool RoundButton(const char* label, ImVec2 center, float radius, ImU32 color) {
-    ImDrawList* draw_list = ImGui::GetWindowDrawList();
-    ImGui::SetCursorScreenPos(ImVec2(center.x - radius, center.y - radius));
-
-    // 隱形按鈕
-    bool pressed = ImGui::InvisibleButton(label, ImVec2(radius * 2, radius * 2));
-
-    // 互動回饋顏色
-    ImU32 finalColor = color;
-    if (ImGui::IsItemActive()) finalColor = IM_COL32(255, 0, 0, 200); // 按下變紅
-    else if (ImGui::IsItemHovered()) finalColor = IM_COL32(255, 255, 255, 200); // 懸停變亮
-
-    // 畫圓
-    draw_list->AddCircleFilled(center, radius, finalColor);
-
-    // 畫文字 (置中)
-    ImVec2 textSize = ImGui::CalcTextSize(label);
-    draw_list->AddText(ImVec2(center.x - textSize.x * 0.5f, center.y - textSize.y * 0.5f),
-                       IM_COL32(0, 0, 0, 255), label);
-
-    return pressed;
-}
-
 // -----------------------------------------------------------------------------
 // [核心函式] 繪製右下角動作按鈕
 // -----------------------------------------------------------------------------
@@ -946,96 +840,213 @@ void CimGui::DrawActionButtons(float scale)
 {
     float bigSize   = MobileUILayout::BTN_BIG_SIZE;
     float smallSize = MobileUILayout::BTN_SMALL_SIZE;
-    float tinySize  = MobileUILayout::BTN_TINY_SIZE; // 新增這行
+    float tinySize  = MobileUILayout::BTN_TINY_SIZE;
     float spacing   = MobileUILayout::SPACING;
     ImVec2 areaSize = ImGui::GetWindowSize();
 
+    // =========================================================
+    // ★★★ 1. 滑動切換邏輯 (Swipe Logic) ★★★
+    // =========================================================
+    // 偵測滑鼠/手指是否在視窗內拖曳
+    // 0 = 左鍵/單指
+    // 閾值設為 20.0f，避免點擊時誤觸滑動
+    if (ImGui::IsWindowHovered() && ImGui::IsMouseDragging(0, 20.0f))
+    {
+        ImVec2 delta = ImGui::GetMouseDragDelta(0);
+
+        // 判定為水平滑動 (X軸位移 > 50 且 大於 Y軸位移)
+        if (abs(delta.x) > 50.0f && abs(delta.x) > abs(delta.y))
+        {
+            if (delta.x > 0) {
+                // 向右滑 -> 切換到 第 0 頁
+                m_btnPageIndex = 0;
+            } else {
+                // 向左滑 -> 切換到 第 1 頁
+                m_btnPageIndex = 1;
+            }
+            // 重置，避免一次滑動觸發多次切換
+            ImGui::ResetMouseDragDelta(0);
+        }
+    }
+
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 100.0f);
 
-    // ------------------------------------------------
-    // 1. 最下層 (Row 3): 攻擊與技能
-    // ------------------------------------------------
+    // 準備變數：根據頁數決定按鈕的 顏色、文字、功能
+    // 這裡用 struct 或簡單的變數替換都可以
+    const char* txt_L = ""; ImVec4 col_L;
+    const char* txt_R = ""; ImVec4 col_R;
+    const char* txt_HP = ""; ImVec4 col_HP;
+    const char* txt_MP = ""; ImVec4 col_MP;
+
+    // ★ 新增：最上層兩個小小鈕 ★
+    const char* txt_TopL = ""; ImVec4 col_TopL; // 左上 (原本的 Z)
+    const char* txt_TopR = ""; ImVec4 col_TopR; // 右上 (原本的 Ctrl)
+
+    // 定義顏色 (提取出來方便管理)
+    ImVec4 col_Orange = ImVec4(0.9f, 0.5f, 0.0f, 0.6f);
+    ImVec4 col_Grey   = ImVec4(0.5f, 0.5f, 0.5f, 0.6f);
+    ImVec4 col_Red    = ImVec4(0.8f, 0.1f, 0.1f, 0.6f);
+    ImVec4 col_Blue   = ImVec4(0.1f, 0.3f, 0.9f, 0.6f);
+    ImVec4 col_Green  = ImVec4(0.1f, 0.6f, 0.1f, 0.6f); // 新增綠色
+    ImVec4 col_Cyan   = ImVec4(0.1f, 0.6f, 0.6f, 0.6f); // 新增青色
+    ImVec4 col_Purple = ImVec4(0.6f, 0.2f, 0.8f, 0.6f);
+
+    if (m_btnPageIndex == 0)
+    {
+        // --- 第 0 頁：戰鬥模式 (原本的) ---
+        txt_L = "ATK";   col_L = col_Orange;
+        txt_R = "Skill"; col_R = col_Grey;
+        txt_HP = "HP";   col_HP = col_Red;
+        txt_MP = "MP";   col_MP = col_Blue;
+
+        txt_TopL = "Shift"; col_TopL = col_Cyan;   // 撿取
+        txt_TopR = "Ctrl"; col_TopR = col_Purple; // Ctrl
+    }
+    else
+    {
+        // --- 第 1 頁：功能模式 (新的) ---
+        // 例如：撿取、坐下、地圖、背包
+        txt_L = "F1";  col_L = col_Green;  // 左下大鈕
+        txt_R = "F2";   col_R = col_Cyan;   // 右下大鈕
+        txt_HP = "F3";  col_HP = col_Grey;  // 左上小鈕
+        txt_MP = "F4";  col_MP = col_Grey;  // 右上小鈕
+
+        txt_TopL = "Pick"; col_TopL = col_Green; // 自動練功 (範例)
+        txt_TopR = "Ctrl"; col_TopR = col_Red;
+    }
+
+
+    // ====================================================
+    // 2. 繪製按鈕 (使用上面的變數)
+    // ====================================================
     float row3_Y = areaSize.y - bigSize;
 
-    // ATK (左下)
+    // --- 左下大鈕 (ATK / Pick) ---
     ImGui::SetCursorPos(ImVec2(0, row3_Y));
-    ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.9f, 0.5f, 0.0f, 0.6f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 0.6f, 0.1f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(1.0f, 0.7f, 0.2f, 0.9f));
-    if (ImGui::Button("ATK", ImVec2(bigSize, bigSize))) {
-        Mobile_DoLeftButton();
+    ImGui::PushStyleColor(ImGuiCol_Button, col_L);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(col_L.x+0.1f, col_L.y+0.1f, col_L.z+0.1f, 0.7f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(col_L.x-0.1f, col_L.y-0.1f, col_L.z-0.1f, 0.9f));
+    if (ImGui::Button(txt_L, ImVec2(bigSize, bigSize))) {
+        if (m_btnPageIndex == 0) Mobile_DoLeftButton(); // 戰鬥普攻
+        else                     Mobile_SetQuickMemoryByKeyInput(MobileCtrlFlag,SDL_SCANCODE_F1);   // 功能撿取 (範例)
     }
     ImGui::PopStyleColor(3);
 
-    // Skill (右下)
+    // --- 右下大鈕 (Skill / Sit) ---
     ImGui::SetCursorPos(ImVec2(bigSize + spacing, row3_Y));
-    ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.5f, 0.5f, 0.5f, 0.6f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.6f, 0.6f, 0.6f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(0.3f, 0.3f, 0.3f, 0.9f));
-    if (ImGui::Button("Skill", ImVec2(bigSize, bigSize))) {
-        Mobile_DoRightButton(0);
+    ImGui::PushStyleColor(ImGuiCol_Button, col_R);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(col_R.x+0.1f, col_R.y+0.1f, col_R.z+0.1f, 0.7f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(col_R.x-0.1f, col_R.y-0.1f, col_R.z-0.1f, 0.9f));
+    if (ImGui::Button(txt_R, ImVec2(bigSize, bigSize))) {
+        if (m_btnPageIndex == 0) Mobile_DoRightButton(0); // 戰鬥技能
+        else                     Mobile_SetQuickMemoryByKeyInput(MobileCtrlFlag, SDL_SCANCODE_F2);      // 功能坐下 (範例)
     }
     ImGui::PopStyleColor(3);
 
-
-    // ------------------------------------------------
-    // 2. 中間層 (Row 2): 藥水
-    // ------------------------------------------------
-    // Y位置 = 底部 - 大按鈕 - 間隙 - 小按鈕
+    // --- 中間層小鈕 ---
     float row2_Y = areaSize.y - bigSize - spacing - smallSize;
     float offsetSmall = (bigSize - smallSize) * 0.5f;
 
-    // HP (左中)
+    // --- 左上小鈕 (HP / Map) ---
     ImGui::SetCursorPos(ImVec2(0 + offsetSmall, row2_Y));
-    ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.8f, 0.1f, 0.1f, 0.6f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.9f, 0.2f, 0.2f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(1.0f, 0.3f, 0.3f, 0.9f));
-    if (ImGui::Button("HP", ImVec2(smallSize, smallSize))) {
-        Mobile_UsePotion(0);
+    ImGui::PushStyleColor(ImGuiCol_Button, col_HP);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(col_HP.x+0.1f, col_HP.y+0.1f, col_HP.z+0.1f, 0.7f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(col_HP.x-0.1f, col_HP.y-0.1f, col_HP.z-0.1f, 0.9f));
+    if (ImGui::Button(txt_HP, ImVec2(smallSize, smallSize))) {
+        if (m_btnPageIndex == 0) Mobile_UsePotion(0); // 吃紅水
+        else                     Mobile_SetQuickMemoryByKeyInput(MobileCtrlFlag, SDL_SCANCODE_F3);      // 開地圖 (範例)
     }
     ImGui::PopStyleColor(3);
 
-    // MP (右中)
+    // --- 右上小鈕 (MP / Bag) ---
     ImGui::SetCursorPos(ImVec2(bigSize + spacing + offsetSmall, row2_Y));
-    ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.1f, 0.3f, 0.9f, 0.6f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.4f, 1.0f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(0.0f, 0.2f, 0.7f, 0.9f));
-    if (ImGui::Button("MP", ImVec2(smallSize, smallSize))) {
-        Mobile_UsePotion(1);
+    ImGui::PushStyleColor(ImGuiCol_Button, col_MP);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(col_MP.x+0.1f, col_MP.y+0.1f, col_MP.z+0.1f, 0.7f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(col_MP.x-0.1f, col_MP.y-0.1f, col_MP.z-0.1f, 0.9f));
+    if (ImGui::Button(txt_MP, ImVec2(smallSize, smallSize))) {
+        if (m_btnPageIndex == 0) Mobile_UsePotion(1); // 吃藍水
+        else                     Mobile_SetQuickMemoryByKeyInput(MobileCtrlFlag, SDL_SCANCODE_F4);// 開背包 (範例)
     }
     ImGui::PopStyleColor(3);
 
 
     // ------------------------------------------------
-    // 3. 最上層 (Row 1): 功能鍵 (CTRL)
+    // 3. 最上層 (Row 1): 功能鍵 (Ctrl & 新按鈕)
     // ------------------------------------------------
-    // ★★★ 這是新加的樓層 ★★★
-    // 把它放在 MP 的正上方
-    // Y位置 = MP的Y - 間隙 - 超小按鈕
     float row1_Y = row2_Y - spacing - tinySize;
-    float offsetTiny = (bigSize - tinySize) * 0.5f; // 讓它對齊最下面的大按鈕中心
 
-    // CTRL (右上頂端) - 紫色
-    ImGui::SetCursorPos(ImVec2(bigSize + spacing + offsetTiny, row1_Y));
+    // 計算置中偏移量 (讓小按鈕對齊下面大按鈕的中心)
+    float offsetTiny = (bigSize - tinySize) * 0.5f;
 
-    ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.6f, 0.2f, 0.8f, 0.6f)); // 紫色半透明
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.7f, 0.3f, 0.9f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(0.4f, 0.0f, 0.6f, 0.9f)); // 按下深紫
+    // ====================================================
+    // ★ 新增按鈕：左上頂端 (位於 HP 正上方) ★
+    // ====================================================
+    // 位置：X = 0 + 偏移量
+    ImGui::SetCursorPos(ImVec2(0 + offsetTiny, row1_Y));
 
-    // 如果你希望按住才有效，就要用 IsItemActive 判定
-    // 這裡先寫成點擊觸發
-    if (ImGui::Button("Ctrl", ImVec2(tinySize, tinySize))) {
-        // 觸發 Ctrl 功能
-        CheckPC = MobileCtrlFlag = !MobileCtrlFlag;
-        if(Hero){
-            Hero->DontMoveAttackFlag = MobileCtrlFlag;
-            Hero->display_item = MobileCtrlFlag;
+    // 顏色：青綠色 (Cyan) - 與隔壁的紫色 Ctrl 做出區別
+    ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.0f, 0.6f, 0.6f, 0.6f)); // 半透明青
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.7f, 0.7f, 0.7f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(0.0f, 0.4f, 0.4f, 0.9f)); // 按下變深青
+
+    if (ImGui::Button(txt_TopL, ImVec2(tinySize, tinySize))) {
+        if (m_btnPageIndex == 0) {
+            // 第 0 頁功能:
+            if(Hero){
+                Hero->DontMoveAttackFlag = !Hero->DontMoveAttackFlag;
+            }
+        } else {
+            // 第 1 頁功能: 撿取
+            Mobile_SendPickItem();
         }
     }
     ImGui::PopStyleColor(3);
 
 
+    // ====================================================
+    // 原本的按鈕：右上頂端 (Ctrl) - 保持不變
+    // ====================================================
+    // 位置：X = 大按鈕寬 + 間距 + 偏移量
+    ImGui::SetCursorPos(ImVec2(bigSize + spacing + offsetTiny, row1_Y));
+
+    ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.6f, 0.2f, 0.8f, 0.6f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.7f, 0.3f, 0.9f, 0.7f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(0.4f, 0.0f, 0.6f, 0.9f));
+
+    // Ctrl 開啟時的視覺回饋
+    if (MobileCtrlFlag) {
+        ImGui::PopStyleColor(3);
+        ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(0.8f, 0.0f, 1.0f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.9f, 0.2f, 1.0f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(0.6f, 0.0f, 0.8f, 1.0f));
+    }
+
+    if (ImGui::Button("Ctrl", ImVec2(tinySize, tinySize))) {
+        CheckPC = MobileCtrlFlag = !MobileCtrlFlag;
+        if(Hero){
+            Hero->display_item = MobileCtrlFlag;
+        }
+    }
+    ImGui::PopStyleColor(3);
+
     ImGui::PopStyleVar();
+
+    // ====================================================
+    // ★★★ 4. 頁面指示器 (小圓點) ★★★
+    // ====================================================
+    // 在按鈕區的最下方畫兩個小點，告訴玩家現在在第幾頁
+    ImDrawList* dl = ImGui::GetWindowDrawList();
+    ImVec2 winPos = ImGui::GetWindowPos();
+    float dotY = winPos.y + areaSize.y - 5.0f; // 貼近底部
+    float centerX = winPos.x + areaSize.x * 0.5f;
+
+    // 左點 (Page 0)
+    dl->AddCircleFilled(ImVec2(centerX - 10, dotY), 4.0f,
+                        (m_btnPageIndex == 0) ? IM_COL32(255, 255, 255, 200) : IM_COL32(100, 100, 100, 100));
+
+    // 右點 (Page 1)
+    dl->AddCircleFilled(ImVec2(centerX + 10, dotY), 4.0f,
+                        (m_btnPageIndex == 1) ? IM_COL32(255, 255, 255, 200) : IM_COL32(100, 100, 100, 100));
 }
 // =========================================================
 // 3. 繪圖函式 (同步使用佈局參數)

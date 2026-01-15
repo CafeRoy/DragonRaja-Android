@@ -51,7 +51,41 @@ C:\MyAndroidGame\android-project\app\build\intermediates\cxx\Debug\37d1eq3j/obj/
   C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_timer.h \
   C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_version.h \
   C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_locale.h \
-  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_misc.h
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_misc.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/SDLRenderer.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/StdAfx.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/HSEL.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Shared.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/DebugExt.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Singleton.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Utility.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/language.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/mytypes.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/XorCrypt.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/SafeValue.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/MenuDef.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/MenuDefine.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/BattleMgr.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Network5.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/FileMgr.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/network.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/ItemTable.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/../SDL2_net/SDL_net.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Network2.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Network3.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/NetWork4.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Network6.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/skill_lsw.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/network7.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/DebugLog.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/MapInfo.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/../SDL2_ttf/SDL_ttf.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_syswm.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/utf8_helper.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/AudioManager.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/include/SDL_mixer.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/ImageTexture.h \
+  C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/include/SDL_image.h
 C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/SimpleUpdater.h:
 C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL.h:
 C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_main.h:
@@ -104,3 +138,37 @@ C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_timer.h:
 C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_version.h:
 C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_locale.h:
 C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_misc.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/SDLRenderer.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/StdAfx.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/HSEL.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Shared.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/DebugExt.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Singleton.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Utility.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/language.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/mytypes.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/XorCrypt.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/SafeValue.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/MenuDef.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/MenuDefine.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/BattleMgr.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Network5.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/FileMgr.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/network.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/ItemTable.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/../SDL2_net/SDL_net.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Network2.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Network3.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/NetWork4.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/Network6.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/skill_lsw.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/network7.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/DebugLog.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/MapInfo.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/../SDL2_ttf/SDL_ttf.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/include/SDL_syswm.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/utf8_helper.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/AudioManager.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/include/SDL_mixer.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/../SDL2_ttf/../SDL2_net/../SDL2_mixer/../src/ImageTexture.h:
+C:/MyAndroidGame/android-project/app/src/main/jni/SDL/../SDL2_image/include/SDL_image.h:

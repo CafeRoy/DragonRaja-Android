@@ -389,7 +389,7 @@ void SDL_DirectDrawInfo::RenderAllDebugShapes()
         // 3. 【關鍵優化】呼叫 SDL 內建的、由 GPU 執行的繪圖函式
         SDL_RenderDrawRect(renderer, &sdl_rect);
     }
-	
+
 }
 
 void SDL_DirectDrawInfo::LoadPNGImage(std::string filename) {
@@ -2558,9 +2558,17 @@ bool isKeyDown(SDL_Scancode scancode) {
 }
 
 bool isKeyPressed(SDL_Scancode scancode) {
-    if (keyboardState == nullptr) return false;
+    /*if (keyboardState == nullptr) return false;
     if (scancode <= SDL_SCANCODE_UNKNOWN || scancode >= SDL_NUM_SCANCODES) return false;
-    return keyboardState[scancode] != 0;
+    return keyboardState[scancode] != 0;*/
+    if (scancode >= SDL_NUM_SCANCODES || scancode < 0) return false;
+    // 檢查並消費「第一次按下」事件
+    if (keysJustPressed[scancode]) {
+        keysJustPressed[scancode] = false; // 消費掉，避免下次重複判斷
+        SDL_Log("DEBUG: Key just pressed: %s", SDL_GetScancodeName(scancode));
+        return true;
+    }
+    return false;
 }
 
 // --- 新增函數：更新 IME 輸入矩形 ---

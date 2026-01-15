@@ -910,7 +910,7 @@ void StartMenuSetting()
 }
 
 
-inline BOOL MouseInRectCheak(int x, int y, RECT Box, BOOL flag)
+BOOL MouseInRectCheak(int x, int y, RECT Box, BOOL flag)
 {
 	POINT pointMouse;
 	if (flag) pointMouse = g_pointMouse;
@@ -926,15 +926,14 @@ inline BOOL MouseInRectCheak(int x, int y, RECT Box, BOOL flag)
 		order.rect.top = Box.top + y;
 		order.rect.right = Box.right + x;
 		order.rect.bottom = Box.bottom + y;
-		order.is_screen_coords = true; // 根據您的原始呼叫，這裡設為 true
+		order.is_screen_coords = false; // 根據您的原始呼叫，這裡設為 true
 #ifdef _TEXTURE
 		if (g_StartMenuOn)
 		{
 			g_SDLInfo.g_linesToDrawThisFrame.push_back(order);
 		}
 #else
-         if (g_StartMenuOn)
-		   g_SDLInfo.g_linesToDrawThisFrame.push_back(order);
+         //g_SDLInfo.g_linesToDrawThisFrame.push_back(order);
 #endif
 		return TRUE;
 	}

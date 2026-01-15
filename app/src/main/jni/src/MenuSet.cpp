@@ -1245,7 +1245,7 @@ SMenu[MN_SYSTEM_OPTION].nField[17].nImageNumber=0;
 
 ///////////////////////////////////////////////////////////////////////////////
 SMenu[MN_LEVELUP].x=1;
-SMenu[MN_LEVELUP].y=371+GABY_SCREEN*2-33;//020515 lsw
+SMenu[MN_LEVELUP].y=321+GABY_SCREEN*2-33;//020515 lsw
 SMenu[MN_LEVELUP].nFieldCount = 1;
 SMenu[MN_LEVELUP].nImageNumber = 0;
 

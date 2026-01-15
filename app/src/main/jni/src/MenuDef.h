@@ -880,7 +880,7 @@ extern int		house_not_res_ct;
 
 extern SCharacter SCharacterData;
 extern int g_MouseInMenu;	// 031110 YGI
-extern int g_MouseInMenuPreviousFrame;
+extern int g_MouseInMenuThisFrame;
 extern int IsMouseOnMenu();
 
 

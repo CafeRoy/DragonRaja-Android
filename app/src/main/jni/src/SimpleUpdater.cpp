@@ -61,7 +61,7 @@ std::string GetWritablePath() {
 }
 
 // 1. JNI 下載函式 (呼叫 Java)
-static bool Android_DownloadFile(const std::string& url, const std::string& savePath) {
+static bool Native_DownloadFile(const std::string& url, const std::string& savePath) {
     JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 
     // 1. 直接取得 Activity 的實體 (Object)
@@ -164,6 +164,11 @@ SimpleUpdater::~SimpleUpdater() {
 }
 
 bool SimpleUpdater::Run() {
+
+    if (CheckAppUpdate()) {
+        return false; // 如果需要更新 APK，直接退出 Updater，不進入遊戲
+    }
+
     // 啟動線程
     std::thread worker(&SimpleUpdater::DownloadThreadFunc, this);
     worker.detach();
@@ -263,16 +268,14 @@ void SimpleUpdater::DrawUI() {
 }
 
 void SimpleUpdater::DownloadThreadFunc() {
-    const std::string CURRENT_APP_VERSION = "1.0";
 
     std::string writablePath = GetWritablePath();
-    std::string baseUrl = "https://www.drefactor.com/packages/";
 
     // 1. 下載 filelist.txt 到暫存檔
     std::string tempFileList = writablePath + "filelist_temp.txt";
 
     // 使用 JNI 下載
-    if (!Android_DownloadFile(baseUrl + "filelist.txt", tempFileList)) {
+    if (!Native_DownloadFile(baseUrl + "filelist.txt", tempFileList)) {
         SDL_Log("更新清單下載失敗");
         m_isDone = true; // 網路有問題，直接跳過更新進入遊戲
         return;
@@ -340,7 +343,7 @@ void SimpleUpdater::DownloadThreadFunc() {
             CreateParentDirectories(item.savePath);
 
             // JNI 下載
-            bool success = Android_DownloadFile(item.url, item.savePath);
+            bool success = Native_DownloadFile(item.url, item.savePath);
 
             if (!success) {
                 SDL_Log("下載失敗: %s", item.name.c_str());
@@ -356,4 +359,98 @@ void SimpleUpdater::DownloadThreadFunc() {
     remove(tempFileList.c_str());
 
     m_isDone = true;
+}
+
+// ---------------------------------------------------------
+// 檢查 APK 主程式是否需要更新
+// 回傳 true = 需要更新 (遊戲應停止)
+// 回傳 false = 無需更新 (繼續跑資源更新)
+// ---------------------------------------------------------
+bool SimpleUpdater::CheckAppUpdate() {
+    SDL_Log("正在檢查 App 版本...");
+
+    // 1. 下載伺服器上的 app_version.txt
+    // 注意：這裡我們偷懶用一下 curl 或者直接讀取
+    // 為了方便，我們複用你現有的下載邏輯，先下載到一個暫存檔
+    std::string localVersionPath = GetWritablePath() + "app_version_temp.txt";
+    std::string remoteUrl = baseUrl + "app_version.txt"; // 假設放在同一層
+
+    // 刪除舊的暫存檔
+    remove(localVersionPath.c_str());
+
+    // 呼叫你的 Native_DownloadFile (或 Android_DownloadFile)
+    // 這裡要用同步下載 (Blocking)，因為要先檢查完才能繼續
+    // 由於你的下載是在 Thread 裡跑的，我們這裡簡單用一個阻塞式下載
+    // 如果你之前的下載函式是 Async 的，這裡可能要改一下。
+    // 但為了簡單，我們假設你已經有一個簡單的 HTTP GET 函式，或者我們直接用下載隊列的一個變體。
+
+    // 為了最簡單實作，我們這裡發起一個單檔下載請求
+    // (這裡假設你之前的 Android_DownloadFile 是阻塞的，或者你有辦法讓它阻塞)
+    // 如果沒有，我們這裡手寫一個簡單的 curl 或者利用之前的邏輯
+
+    // ★★★ 為了不改動你現有架構太多，我們用最簡單的 SDL_Net 或直接複用下載邏輯 ★★★
+    // 這裡我們假設下載很快，直接用原本的下載函式 (注意：這是在 Main Thread 呼叫還是 Thread?)
+    // 最好是在 Run() 的一開始就做。
+
+    if (!Native_DownloadFile(remoteUrl, localVersionPath)) {
+        SDL_Log("無法取得伺服器版本資訊，跳過檢查。");
+        return false; // 下載失敗，可能是網路問題，讓玩家先進遊戲吧
+    }
+
+    // 2. 讀取下載下來的版本號
+    std::ifstream file(localVersionPath);
+    std::string serverVersionStr;
+    if (file.is_open()) {
+        std::getline(file, serverVersionStr);
+        file.close();
+    }
+
+    // 去除可能的換行符號
+    serverVersionStr.erase(0, serverVersionStr.find_first_not_of(" \t\n\r"));
+    serverVersionStr.erase(serverVersionStr.find_last_not_of(" \t\n\r") + 1);
+
+    if (serverVersionStr.empty()) return false;
+
+    SDL_Log("當前版本: %s | 伺服器版本: %s", CURRENT_APP_VERSION.c_str(), serverVersionStr.c_str());
+
+    // 3. 比對版本 (使用 atof 轉成浮點數比較，簡單粗暴)
+    double localVer = std::atof(CURRENT_APP_VERSION.c_str());
+    double serverVer = std::atof(serverVersionStr.c_str());
+
+    if (serverVer > localVer) {
+        // 4. 需要更新！
+        SDL_Log("發現新版本！強制更新。");
+
+        // 彈出提示視窗
+        const SDL_MessageBoxButtonData buttons[] = {
+                { SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "前往下載" },
+                { SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, "退出" },
+        };
+        /*const SDL_MessageBoxColorScheme colorScheme = {{
+                { 255, 0, 0 }, { 0, 255, 0 }, { 255, 255, 0 }, { 0, 0, 255 }, { 255, 0, 255 }
+        }};*/
+        const SDL_MessageBoxData messageboxdata = {
+                SDL_MESSAGEBOX_INFORMATION,
+                NULL,
+                "版本更新",
+                "發現新的遊戲版本！請前往下載最新安裝包以繼續遊戲。",
+                SDL_arraysize(buttons),
+                buttons,
+                nullptr
+        };
+
+        int buttonid;
+        if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0) {
+            SDL_Log("error displaying message box");
+        }
+
+        if (buttonid == 1) {
+            // 打開瀏覽器
+            SDL_OpenURL(APP_DOWNLOAD_URL.c_str());
+        }
+
+        return true; // 告訴主程式需要停止
+    }
+
+    return false; // 版本一致，或是 server 版本較舊
 }

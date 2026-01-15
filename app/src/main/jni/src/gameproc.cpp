@@ -435,6 +435,7 @@ BOOL StartMenuProc()
     // ★ 修正點：邏輯更新
     if (g_FrameMgr.ShouldUpdateLogic())
     {
+        g_SDLInfo.g_linesToDrawThisFrame.clear();
         StartMenuChecking();
 
         // 這裡放其他的邏輯更新...
@@ -458,7 +459,7 @@ BOOL StartMenuProc()
     }
 
     // 3. 渲染區 (Render)
-    g_SDLInfo.g_linesToDrawThisFrame.clear();
+
     g_SDLInfo.setBackbuffersurface(g_DestBackBuf, dDxSize, wDxSize);
     UpdateTextCache();
 
@@ -521,47 +522,6 @@ bool IsScreenArea(int x, int y)
     if (screen_y > GAME_SCREEN_YSIZE + MARGIN) return false; // 太下面
 
     return true;
-}
-// 專門處理 EffectBuffer 的填表函式
-void FillOrderFromCmd(const EFFECT_CMD& cmd, float worldX, float worldY)
-{
-    // 螢幕剔除 (傳進來的是 World Coordinate)
-    if (!IsScreenArea((int)worldX, (int)worldY)) return;
-
-    if (g_OrderInfo.count >= MAX_ORDERTABLE) return;
-
-    LPORDERTABLE o = &g_OrderInfo.order[g_OrderInfo.count];
-
-    // 1. 基本參數直接從 cmd 複製
-    o->wType = cmd.sort_Type;
-    o->height = cmd.height;
-    o->alpha = cmd.alpha;
-    o->rgb = cmd.rgb;
-    o->lpvData = (LPVOID)cmd.sp;
-
-    // 2. 還原 Type (處理 /10 的邏輯)
-    switch (cmd.type / 10) {
-        case 1: o->type = 1; break;
-        case 2: o->type = 2; break;
-        default: o->type = cmd.type; break;
-    }
-
-    // 3. 處理震動 (Type 7)
-    int shakeX = 0, shakeY = 0;
-    if (o->type == 7) {
-        //shakeX = (rand() % 5 - 2);
-        //shakeY = (rand() % 5 - 2);
-    }
-
-    // 4. 填入最終座標 (DisplaySprite 會負責減去 Mapx)
-    o->x = (int)worldX + shakeX;
-    o->y = (int)worldY + shakeY;
-    o->offset = (int)worldY; // 深度排序
-
-    o->show = 1;
-    o->sort = 1;
-
-    g_OrderInfo.count++;
 }
 
 void ReputMagicEffect() {
@@ -833,6 +793,7 @@ void RenderGame() {
     CimGui::Instance().NewFrame();
     g_SDLInfo.setBackbuffersurface(g_DestBackBuf, dDxSize, wDxSize);
     g_SDLInfo.SDL_EraseScreen();
+
     EWndMgr.SDLCommonEditWndProc(g_SDLInfo.keyboardEventThisframe);
     DisplaySpriteUnderTile();
     MapDisplay(0);
@@ -999,7 +960,6 @@ void UpdateGame() {
 
     CursorStatus();
     ViewCheckRoutine(100);
-    g_MouseInMenuPreviousFrame = g_MouseInMenu;
     CheckTrap();
 #ifdef _DEBUG
     if (g_SDLInfo.bOutputSmallMap) {
@@ -1044,8 +1004,10 @@ BOOL GameProc() {
     }
 
     UpdateTextCache();
+    g_MouseInMenuThisFrame = MouseOnMenu();
     // 2. 邏輯迴圈 (固定 17 UPS)
     while (g_FrameMgr.ShouldUpdateLogic()) {
+        g_SDLInfo.g_linesToDrawThisFrame.clear();
         FlushPendingDeletesItemList();
         ProcessDeferredDeletion();
         CleanUpSkillCursors();
@@ -2543,6 +2505,7 @@ void DoLButtonDown(void)	// LButton�� �ٿ�Ǹ� ����Ǿ� ��
 	if (NotNeededMouseLButtonClick()) return;
 	if (CounselerSelectChar()) return;
 	if (CheckSkill()) return;
+    if(g_MouseInMenuThisFrame) return;
 
 
 	if (tool_ID_INPUT_MYHOUSE)
@@ -2560,8 +2523,6 @@ void DoLButtonDown(void)	// LButton�� �ٿ�Ǹ� ����Ǿ� ��
 		InsertMapObject(tool_CurMapObjectId, Mox, Moy);
 		return;
 	}
-
-    if(g_MouseInMenuPreviousFrame) return;
 
 	if (YouCanHeroActionProc)
 	{

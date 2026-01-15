@@ -3932,7 +3932,7 @@ void MenuSet2() // ʵ带 ߰Ҷ ׾  üũ  ʾƾ  ʵ IsNoCheckFieldByMain() Լ ߰Ѵ.
 	}
 	{ //021001 lsw
 		// ::SMenuReg(MN_CHATTING, 10, 355, 0,0,10,0);
-		::SMenuReg(MN_CHATTING, 0, 370, NEW_CHAT_BACK_IMG, 0, 10, 0);
+		::SMenuReg(MN_CHATTING, 0, 321, NEW_CHAT_BACK_IMG, 0, 10, 0);
 		//巡  //巡 ׻  ʵ忩 Ѵ
 		::SMenuFTReg(MN_CHATTING, 9, FT_DRAG_ZONE, 0, 3, 5, 19, 20, NEW_CHAT_BACK_IMG, 1, 2);
 		//ư

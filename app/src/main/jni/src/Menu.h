@@ -214,6 +214,7 @@ const int SHOW_MAGIC = 12;
 const int ONE_MAGIC_RECT = 44;
 
 
+extern int MouseOnMenu();
 extern void MenuDisplay();      //�޴��� Ȱ�����θ� �Ǵ��� ����ϴ� �Լ�
 extern void MenuSetting();      //������ �����ϱ� ���� �޴� ����ü���� �ʱ�ȭ  GamePorc() ���� ȣ��
 extern void StartMenuSetting();      //������ �����ϱ� ���� �޴� ����ü���� �ʱ�ȭ  GamePorc() ���� ȣ��

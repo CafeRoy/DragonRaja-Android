@@ -148,7 +148,7 @@ extern void FieldTypeTextPut(int mx,int my,int x,int y,char *temp);
 extern void LoadMenuData(int nNum);                 
 extern void FreeMenuData(int nNum);                 
 extern void PutImageCenter(int mx, int my, int x, int y, int nImageNumber);
-extern inline BOOL MouseInRectCheak(int x, int y, RECT Box, BOOL flag = TRUE );
+extern BOOL MouseInRectCheak(int x, int y, RECT Box, BOOL flag = TRUE );
 extern void SetCharacterData();  
 extern void SetRect(RECT &rect,int left, int top, int right, int bottom);
 extern void MoveTextPut(int x, int y, char *sSource, int type=0);

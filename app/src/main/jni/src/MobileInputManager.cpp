@@ -58,7 +58,7 @@ void MobileInputManager::SendSimulatedMouseMotion(int x, int y) {
 // ---------------------------------------------------------
 bool MobileInputManager::IsTouchInsideChatWindow(int x, int y) {
     // 範例邏輯，請根據實際情況修改
-    SDL_Rect chatRect = { SMenu[MN_CHATTING].x, SMenu[MN_CHATTING].y, 200, 150 };
+    SDL_Rect chatRect = { SMenu[MN_CHATTING].x, SMenu[MN_CHATTING].y, 200, 250 };
     return (x >= chatRect.x && x <= chatRect.x + chatRect.w &&
             y >= chatRect.y && y <= chatRect.y + chatRect.h);
 }
@@ -138,7 +138,7 @@ void MobileInputManager::HandleTwoFingerInput(SDL_Event* e) {
     if (e->type == SDL_FINGERDOWN) {
         if (numFingers == 2) {
             // A. UI 操作 (魔法欄) - 點擊 (左鍵)
-            if (IsTouchOnMagicBar(x, y)) {
+            /*if (IsTouchOnMagicBar(x, y)) {
                 SendSimulatedMouseEvent(SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT, x, y);
                 SendSimulatedMouseEvent(SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT, x, y);
             }
@@ -148,7 +148,9 @@ void MobileInputManager::HandleTwoFingerInput(SDL_Event* e) {
                     SendSimulatedMouseEvent(SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT, x, y);
                     m_isRightClickActive = true;
                 }
-            }
+            }*/
+
+            SDL_Log("numFingers =%d", numFingers);
         }
     }
     else if (e->type == SDL_FINGERMOTION) {
@@ -171,7 +173,7 @@ void MobileInputManager::HandleTwoFingerInput(SDL_Event* e) {
 // ---------------------------------------------------------
 void MobileInputManager::HandleMobileEvents(SDL_Event* e) {
     // 1. 生命週期
-    HandleAppLifecycle(e);
+    //HandleAppLifecycle(e);
 
     // 2. 觸控相關
     switch (e->type) {

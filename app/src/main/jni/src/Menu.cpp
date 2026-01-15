@@ -205,7 +205,7 @@ bool bSoundOn = false;
 
 bool g_DropOnHero = false;	// ������� �������� ����߷��� ��� true set
 int g_MouseInMenu = 0;	// 031110 YGI
-int g_MouseInMenuPreviousFrame = 0;
+int g_MouseInMenuThisFrame = 0;
 int memorize[12] = { 0, };			// �޸������ �Ͽ��� ���...
 int SkillOn = -1;				// ��ų�� ������ �Ǹ� -1�� ������ �ش�.
 
@@ -886,8 +886,84 @@ int ViewCheckRoutine2(int type, int t)
 #endif
 }
 
+int MouseOnMenu(){
+    // =========================================================
+    // 1. 硬體同步 (解決瞬移問題)
+    // =========================================================
+    SDL_PumpEvents();
+    int physMouseX, physMouseY;
+    SDL_GetMouseState(&physMouseX, &physMouseY);
 
-//HWND hwnd;
+    // =========================================================
+    // 2. 計算視窗縮放參數 (Physical -> Logical 1280x720)
+    // =========================================================
+    // 我們要算出手指在 1280x720 的畫布上，到底是點在哪個位置
+
+    const float GAME_LOGIC_WIDTH  = 1280.0f;
+    const float GAME_LOGIC_HEIGHT = 720.0f;
+
+    int clientW, clientH;
+    SDL_GetRendererOutputSize(g_SDLInfo.renderer, &clientW, &clientH);
+
+    // 計算縮放比例 (保持比例，取最小值，這是處理黑邊的標準做法)
+    float ratioX = (float)clientW / GAME_LOGIC_WIDTH;
+    float ratioY = (float)clientH / GAME_LOGIC_HEIGHT;
+    float scale = (ratioX < ratioY) ? ratioX : ratioY;
+
+    // 計算黑邊產生的物理偏移量
+    float physOffsetX = ((float)clientW - (GAME_LOGIC_WIDTH * scale)) / 2.0f;
+    float physOffsetY = ((float)clientH - (GAME_LOGIC_HEIGHT * scale)) / 2.0f;
+
+    //SDL_Log("黑邊 x %.2f , y %.2f  scale %.2f ", physOffsetX, physOffsetY, scale);
+    // ★ 核心轉換：把物理座標轉回 1280x720 的邏輯座標 ★
+    int logicMouseX = (int)((physMouseX - physOffsetX) / scale);
+    int logicMouseY = (int)((physMouseY - physOffsetY) / scale);
+    logicMouseX -= physOffsetX;
+    logicMouseY -= 90;
+    // =========================================================
+    // 3. 直接比對 (因為你說 SMenu 已經是 1280x720 的座標了)
+    // =========================================================
+
+    for (int x = 0; x < MAX_MAIN; x++)
+    {
+        int i = mainmenu[x];
+
+        /*if(x >= 2 && x <= 8)
+        {
+            if (!SMenu[i].bActive) continue;
+
+            RECT Box;
+            // 直接用 SMenu 的座標，不加任何額外偏移
+            // 範圍稍微加大 (+50) 方便手指點擊
+            SetRect(Box, SMenu[i].x, SMenu[i].y, SMenu[i].x + 50, SMenu[i].y + 50);
+
+            if(MouseInRectCheak(SMenu[i].x, SMenu[i].y, Box)){
+                SDL_Log("SUCCESS! CATCH Menu %d", i);
+                return i;
+            }
+            // LOG 測試：這是最關鍵的一步
+            // 讓我們看看 logicMouse (手指) 和 Box (按鈕) 到底有沒有重疊
+            /if (i == 210) {
+                SDL_Log("Menu[210] Pure Check: Mouse(%d,%d) vs Box(%d,%d)",
+                        logicMouseX, logicMouseY, Box.left, Box.top);
+            }/
+
+            if (logicMouseX > Box.left
+                && logicMouseX < Box.right
+                && logicMouseY > Box.top
+                && logicMouseY < Box.bottom ) {
+
+                SDL_Log("SUCCESS! CATCH Menu %d", i);
+                return i;
+            }
+        }*/
+
+        // 其他普通菜單
+        if (SMenu[i].bActive && CheckMouseInMenu(i)) return i;
+    }
+
+    return 0;
+}
 /*********************************�Լ� �ҽ�*******************************************/
 ///////////////////////////////////////////////////////////////////////////////////////
 void MenuDisplay()
@@ -2990,6 +3066,7 @@ void MenuSubProcessType(SMENU* SubMenu)
 		{
 			if (!EWndMgr.checkInputBoxVisibility(HWND_3)) {
 				EWndMgr.showInputBox(HWND_3);
+                EWndMgr.SetTxt(HWND_3, "1000000");
 			}
 			char temp[20] = { 0, };
 			std::string money = EWndMgr.GetTxt(HWND_3);

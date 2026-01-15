@@ -561,7 +561,7 @@ void SendMoveData(LPCHARACTER ch)
 
 	if (pNpc->name[0] == '\0') return;
 
-	if (ch->id == Hero->id) {
+	if (ch->id ==  Hero->id) {
 		if (!real_move) {
 			return;
 		}

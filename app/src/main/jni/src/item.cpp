@@ -1502,7 +1502,7 @@ int CheckEventWith_Item( void )
 		{
 			if( (TileMap[ Hero->x / TILE_SIZE][ Hero->y / TILE_SIZE].attr_inside ==
 				TileMap[ CursorCheckedItem->x / TILE_SIZE][ CursorCheckedItem->y / TILE_SIZE].attr_inside ) )	//  �ǳ��� �ְų� �ǿܿ� �־�� ������ �ݰų� ������ �ִ�. 
-			if( Distance( CursorCheckedItem->x, CursorCheckedItem->y, Hero->x, Hero->y ) < 10000 )
+			if( Distance( CursorCheckedItem->x, CursorCheckedItem->y, Hero->x, Hero->y ) < 20736 ) //原本是10000 = 3.15格左右,改成 20736就是4.5格
 			{	  
 				SendTakeItem( CursorCheckedItem->server_id );              
 				return 1;

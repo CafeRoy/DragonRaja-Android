@@ -122,12 +122,13 @@ private:
     CimGui();
     ~CimGui();
 
+#ifdef _DEBUG
     // --- GM 面板相關邏輯 (封裝在內部) ---
     void DrawGmPanel();
     void DrawGmActionsHeader();    // GM 指令區塊
     void DrawMapMoveHeader();      // 地圖傳送區塊
     void DrawCharacterManager();   // 角色管理區塊 (雙列表)
-
+#endif
     // --- Release 設定頁面 (未來擴充用) ---
     void DrawSettingsPanel();
     // --- 輔助函式 ---
@@ -181,6 +182,7 @@ public:
     // 開關 Mobile UI
     bool m_showMobileUI = true;
     bool MobileCtrlFlag = false;
+    int m_btnPageIndex = 0;
 private:
     void DrawMobileUI();        // 主進入點
     void DrawJoystick(float scale);        // 繪製搖桿
